@@ -1,6 +1,7 @@
 <?php
 
 require 'connection.php';
+
 $app = [];
 $app['db'] = (new Database())->db;
 
@@ -10,7 +11,10 @@ if(isset($_POST["name"]) && isset($_FILES["doc"])) {
     $filepath = "uploaded/" . $image["name"];
     move_uploaded_file($image["tmp_name"], "$filepath");
 
-    if ($username !== "" && $image !== "") {
+    if ($username == "" || $filepath == "uploaded/") {
+        echo "<script>alert('Please fill all the inputs')</script>";
+    }
+    else{
         $insert = $app['db']->query("INSERT INTO files(user,file) VALUES('$username', '$filepath')");
     }
 
